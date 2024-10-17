@@ -1,0 +1,50 @@
+ import java.util.Scanner;
+
+public class ProductSearch {
+    
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        int[] productIDs = {104, 105, 106, 107, 101, 102, 103};
+        
+        System.out.print("Enter the product ID to search for: ");
+        int searchID = scanner.nextInt();
+
+        int productIndex = searchProductIndex(productIDs, searchID);
+        
+        if (productIndex != -1) {
+            System.out.println("The product ID " + searchID + " is found at index: " + productIndex);
+        } else {
+            System.out.println("Product ID " + searchID + " not found.");
+        }
+    }
+    
+    public static int searchProductIndex(int[] productIDs, int searchID) {
+        int leftPointer = 0;
+        int rightPointer = productIDs.length - 1;
+
+        while (leftPointer <= rightPointer) {
+            int midPointer = leftPointer + (rightPointer - leftPointer) / 2;
+
+            if (productIDs[midPointer] == searchID) {
+                return midPointer;
+            }
+
+            if (productIDs[leftPointer] <= productIDs[midPointer]) { 
+                if (productIDs[leftPointer] <= searchID && searchID < productIDs[midPointer]) {
+                    rightPointer = midPointer - 1;
+                } else {
+                    leftPointer = midPointer + 1;
+                }
+            } else { 
+                if (productIDs[midPointer] < searchID && searchID <= productIDs[rightPointer]) {
+                    leftPointer = midPointer + 1;
+                } else {
+                    rightPointer = midPointer - 1;
+                }
+            }
+        }
+
+        return -1; 
+    }
+}
